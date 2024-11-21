@@ -13,6 +13,7 @@ if [[ ! -f "$ini_file" ]]; then
     exit 1
 fi
 
+# Get config value function
 get_value() {
     key=$1
     value=$(awk -F '=' '/^[^;]*'"$key"'[^;]*=/ {gsub(/^[ \t]+|[ \t]+$/, "", $2); print $2; exit}' "$ini_file")
@@ -24,6 +25,7 @@ usr=$(get_value "user")
 cmd=$(get_value "cmd")
 db=$(get_value "db")
 
+# Check if the directory exists
 if [[ ! -d "$dir" ]]; then
     echo "No such directory"
     exit 1
@@ -31,6 +33,7 @@ fi
 
 echo "[worker] running"
 
+# Run command
 su - $usr -c "cd $dir && $cmd" &
 echo "[worker] Start with PID $!"
 
@@ -41,6 +44,7 @@ do
     cw=${#pids[@]}
 
     if [[ $cw > $wn ]]; then
+        # Decrease worker
         n=$(($cw-$wn))
         pids=($(pgrep -P $$))
         for ((i=1; i<=$n; i++))
@@ -48,6 +52,7 @@ do
             echo "[worker] Kill PID "${pids[i]}
         done
     else
+        # Increase worker
         n=$(($wn-1))
         for ((i=1; i<=$n; i++))
         do
