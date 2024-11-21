@@ -1,14 +1,12 @@
 #!/bin/bash
 
-conf="./conf/"
+conf="conf/"
 ini_files=($(find "$conf" -type f -name "*.ini"))
-pids=()
 
 for file in "${ini_files[@]}"
 do
-    bash ./worker.sh "$file" &
-    pids+=($!)
+    bash worker.sh "$file" &
 done
 
-trap 'kill ${pids[@]}' SIGINT SIGTERM EXIT
+trap "trap - SIGTERM && kill -- -$$" SIGINT SIGTERM EXIT
 wait
