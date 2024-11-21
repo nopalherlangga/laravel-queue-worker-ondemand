@@ -36,7 +36,7 @@ echo "[worker] Start with PID $!"
 
 while true
 do
-    jobs=$(plesk db -r -s -e "use $db; select count(*) from jobs;")
+    jobs=$(mysql $db -se "select count(*) from jobs;" --skip-column-names)
     wn=$((($jobs / 50)))
     cw=${#pids[@]}
 
