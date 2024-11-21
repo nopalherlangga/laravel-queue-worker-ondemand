@@ -1,0 +1,12 @@
+[Unit]
+Description=Worker Service
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/path/to/service
+ExecStart=/path/to/service/main.sh
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
