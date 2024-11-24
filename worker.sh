@@ -50,6 +50,7 @@ do
         for ((i=1; i<=$n; i++))
         do
             echo "[worker] Kill PID "${pids[i]}
+            kill ${pids[i]}
         done
     else
         # Increase worker
